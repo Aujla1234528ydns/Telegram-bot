@@ -3,8 +3,8 @@ from telegram import Update
 from telegram.helpers import InputFile
 from telegram.ext import ApplicationBuilder, MessageHandler, CommandHandler, ContextTypes, filters
 
-BOT_TOKEN = os.environ["BOT_TOKEN"]
-ADMIN_ID = int(os.environ["ADMIN_ID"])
+BOT_TOKEN = os.environ["7925601385:AAHHRShrFUGuvsllLrrw2koN9vwjNDlejBk"]
+ADMIN_ID = int(os.environ["5926495978"])
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Hi! Send me your feedback (text or image).")
