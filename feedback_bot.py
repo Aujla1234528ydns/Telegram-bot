@@ -1,6 +1,6 @@
 import os
 from telegram import Update
-from telegram.helpers import InputFile
+from telegram import InputFile
 from telegram.ext import ApplicationBuilder, MessageHandler, CommandHandler, ContextTypes, filters
 
 BOT_TOKEN = os.environ["7925601385:AAHHRShrFUGuvsllLrrw2koN9vwjNDlejBk"]
