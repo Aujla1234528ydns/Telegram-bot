@@ -1,4 +1,5 @@
-from telegram import Update, InputFile
+from telegram import Update
+from telegram.helpers import InputFile
 from telegram.ext import ApplicationBuilder, MessageHandler, CommandHandler, filters, ContextTypes
 
 BOT_TOKEN = "7925601385:AAHHRShrFUGuvsllLrrw2koN9vwjNDlejBk"
