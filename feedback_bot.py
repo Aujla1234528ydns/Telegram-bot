@@ -2,32 +2,34 @@ import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
-# Load environment variables
+# Load bot token and admin ID from environment variables
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 ADMIN_ID = int(os.environ["ADMIN_ID"])
 
-# Start command
+# /start command handler
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Welcome! Send your feedback here.")
+    await update.message.reply_text("Hi! Please send your feedback.")
 
-# Handle text or photo messages
+# Handle all messages
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     chat_id = update.effective_chat.id
 
-    # Handle text
+    # Handle text feedback
     if update.message.text:
-        message = f"Feedback from @{user.username or user.first_name} (ID: {chat_id}):\n{update.message.text}"
-        await context.bot.send_message(chat_id=ADMIN_ID, text=message)
-        await update.message.reply_text("✅ Feedback sent!")
+        msg = f"📝 Feedback from @{user.username or user.first_name} (ID: {chat_id}):\n\n{update.message.text}"
+        await context.bot.send_message(chat_id=ADMIN_ID, text=msg)
+        await update.message.reply_text("✅ Your message has been sent!")
 
-    # Handle photo
+    # Handle photo feedback
     elif update.message.photo:
-        caption = update.message.caption or "(no caption)"
+        caption = update.message.caption or "(No caption)"
         photo_file = update.message.photo[-1]
-        await photo_file.get_file().download_to_drive("feedback.jpg")
-        await context.bot.send_photo(chat_id=ADMIN_ID, photo=open("feedback.jpg", "rb"), caption=f"From @{user.username or user.first_name}:\n{caption}")
-        await update.message.reply_text("✅ Photo feedback sent!")
+        file = await photo_file.get_file()
+        await file.download_to_drive("photo.jpg")
+        with open("photo.jpg", "rb") as photo:
+            await context.bot.send_photo(chat_id=ADMIN_ID, photo=photo, caption=f"📸 From @{user.username or user.first_name}:\n{caption}")
+        await update.message.reply_text("✅ Your photo has been sent!")
 
 # Main function
 async def main():
@@ -39,6 +41,7 @@ async def main():
     print("Bot is running...")
     await app.run_polling()
 
+# Entry point
 if __name__ == "__main__":
     import asyncio
     asyncio.run(main())
